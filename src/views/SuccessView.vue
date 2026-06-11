@@ -13,30 +13,21 @@
         <div class="leg leg2"></div>
       </div>
 
-      <h2>操作成功 ✅</h2>
-      <p>{{ msg }}</p>
+      <h2 class="page-title">操作成功 ✅</h2>
+      <p class="text-body">{{ msg }}</p>
 
       <div class="btn-group">
-        <el-button type="primary" @click="goHome">
-          返回首页
-        </el-button>
+        <el-button type="primary" @click="goBack('/')">返回</el-button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
-import { ElMessage } from 'element-plus'
+import { useGoBack } from '@/composables/useGoBack'
 
-const router = useRouter()
+const { goBack } = useGoBack()
 const msg = '欢迎回来，登录成功！'
-
-// 返回首页
-function goHome() {
-  router.push('/')
-  ElMessage.success('跳转成功')
-}
 </script>
 
 <style scoped>
@@ -143,12 +134,10 @@ function goHome() {
 }
 
 h2 {
-  color: #333;
   margin: 10px 0;
 }
 
 p {
-  color: #666;
   margin-bottom: 24px;
 }
 

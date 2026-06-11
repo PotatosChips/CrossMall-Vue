@@ -31,9 +31,9 @@ const frontendTech = ['Vue 3', 'Vite', 'Vue Router', 'Pinia', 'Element Plus', 'A
 </script>
 
 <template>
-  <div class="home-page">
-    <header class="home-header">
-      <h2>跨境商城</h2>
+  <div class="page">
+    <header class="page-header">
+      <h2 class="page-title">跨境商城</h2>
       <div class="header-actions">
         <el-button type="primary" @click="router.push('/products')">进入商城</el-button>
         <el-button v-if="!isLoggedIn" link @click="openAuth('login')">登录</el-button>
@@ -81,85 +81,3 @@ const frontendTech = ['Vue 3', 'Vite', 'Vue Router', 'Pinia', 'Element Plus', 'A
     </el-card>
   </div>
 </template>
-
-<style scoped>
-.home-page {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 24px;
-}
-
-.home-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.header-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.card-title {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.intro-card {
-  margin-bottom: 20px;
-}
-
-.intro-text {
-  color: #606266;
-  line-height: 1.8;
-  margin: 0 0 12px;
-}
-
-.intro-text:last-child {
-  margin-bottom: 0;
-}
-
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 16px;
-  margin-bottom: 20px;
-}
-
-.feature-title {
-  font-size: 16px;
-  font-weight: 600;
-  margin: 0 0 8px;
-  color: #303133;
-}
-
-.feature-desc {
-  margin: 0;
-  color: #909399;
-  font-size: 14px;
-  line-height: 1.7;
-}
-
-.tech-section + .tech-section {
-  margin-top: 16px;
-}
-
-.tech-label {
-  margin: 0 0 8px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #303133;
-}
-
-.tech-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.user-label {
-  color: #409eff;
-  font-weight: 500;
-}
-</style>

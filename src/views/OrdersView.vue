@@ -5,6 +5,7 @@ import { ElMessage } from 'element-plus'
 import { getOrderList } from '@/api/order'
 import { PAY_TYPE, buyerOrderStatusLabel, buyerOrderStatusTag } from '@/utils/orderMeta'
 import { useAuthDialog } from '@/composables/useAuthDialog'
+import BackButton from '@/components/BackButton.vue'
 
 const router = useRouter()
 const { openAuth } = useAuthDialog()
@@ -51,10 +52,11 @@ onMounted(loadOrders)
 </script>
 
 <template>
-  <div class="orders-page" v-loading="loading">
+  <div class="page page-medium" v-loading="loading">
+    <BackButton fallback="/products" />
     <header class="page-header">
-      <h2>我的订单</h2>
-      <el-button link type="primary" @click="router.push('/products')">继续购物</el-button>
+      <h2 class="page-title">我的订单</h2>
+      <el-button link type="primary" @click="router.push('/cart')">购物车</el-button>
     </header>
 
     <el-empty v-if="!loading && orders.length === 0" description="暂无订单">
@@ -91,24 +93,6 @@ onMounted(loadOrders)
 </template>
 
 <style scoped>
-.orders-page {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 24px;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.price {
-  color: #f56c6c;
-  font-weight: 600;
-}
-
 :deep(.el-table__row) {
   cursor: pointer;
 }

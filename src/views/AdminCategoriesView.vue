@@ -5,6 +5,7 @@ import { getCategories } from '@/api/product'
 import { addCategory, updateCategory, deleteCategory } from '@/api/admin'
 import { useAuthDialog } from '@/composables/useAuthDialog'
 import { useUser } from '@/composables/useUser'
+import BackButton from '@/components/BackButton.vue'
 
 const { openAuth } = useAuthDialog()
 const { isAdmin, fetchCurrentUser } = useUser()
@@ -107,9 +108,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="page" v-loading="loading">
+  <div class="page page-narrow" v-loading="loading">
+    <BackButton fallback="/" />
     <header class="page-header">
-      <h2>分类管理</h2>
+      <h2 class="page-title">分类管理</h2>
       <el-button v-if="isAdmin" type="primary" @click="openCreate">新增分类</el-button>
     </header>
 
@@ -145,18 +147,3 @@ onMounted(async () => {
     </el-dialog>
   </div>
 </template>
-
-<style scoped>
-.page {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 24px;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-</style>

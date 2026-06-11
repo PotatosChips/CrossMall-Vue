@@ -6,6 +6,7 @@ import { useAuthDialog } from '@/composables/useAuthDialog'
 import { useUser } from '@/composables/useUser'
 import SellerProductTable from '@/components/seller/SellerProductTable.vue'
 import SellerProductFormDialog from '@/components/seller/SellerProductFormDialog.vue'
+import BackButton from '@/components/BackButton.vue'
 
 const { openAuth } = useAuthDialog()
 const { isSeller, fetchCurrentUser } = useUser()
@@ -74,9 +75,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="products-page" v-loading="loading">
-    <header class="page-header">
-      <h2>商品管理</h2>
+  <div class="page page-medium" v-loading="loading">
+    <BackButton fallback="/seller/orders" />
+    <header class="page-header page-header-wrap">
+      <h2 class="page-title">商品管理</h2>
       <div class="header-actions">
         <el-input
           v-model="keyword"
@@ -90,7 +92,7 @@ onMounted(async () => {
       </div>
     </header>
 
-    <el-alert v-if="!isSeller" type="warning" show-icon :closable="false" class="alert">
+    <el-alert v-if="!isSeller" type="warning" show-icon :closable="false" class="alert-block">
       请使用卖家账号登录（如 seller_us / seller_jp / seller_eu，密码 123456）
     </el-alert>
 
@@ -103,30 +105,3 @@ onMounted(async () => {
     />
   </div>
 </template>
-
-<style scoped>
-.products-page {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 24px;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.header-actions {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.alert {
-  margin-bottom: 16px;
-}
-</style>

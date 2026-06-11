@@ -9,6 +9,7 @@ export function useUser() {
   const isSeller = computed(() => user.value?.role === 1)
   const isBuyer = computed(() => user.value?.role === 0)
   const isAdmin = computed(() => user.value?.role === 2)
+  const merchantId = computed(() => user.value?.merchantId ?? null)
 
   function setUser(data) {
     if (!data?.username) {
@@ -19,6 +20,7 @@ export function useUser() {
       username: data.username,
       nickname: data.nickname,
       role: data.role,
+      merchantId: data.merchantId ?? null,
     }
   }
 
@@ -43,5 +45,5 @@ export function useUser() {
     }
   }
 
-  return { user, isLoggedIn, displayName, isSeller, isBuyer, isAdmin, setUser, fetchCurrentUser, logout }
+  return { user, isLoggedIn, displayName, isSeller, isBuyer, isAdmin, merchantId, setUser, fetchCurrentUser, logout }
 }

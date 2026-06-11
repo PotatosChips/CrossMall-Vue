@@ -9,7 +9,7 @@ import { useUser } from '@/composables/useUser'
 
 const router = useRouter()
 const { visible, mode, closeAuth, switchMode } = useAuthDialog()
-const { setUser } = useUser()
+const { setUser, fetchCurrentUser } = useUser()
 
 const loginUsername = ref('')
 const loginPassword = ref('123456')
@@ -71,6 +71,7 @@ async function handleLogin() {
 
     if (res.data.success) {
       setUser(res.data)
+      await fetchCurrentUser()
       ElMessage.success('登录成功')
       resetLoginForm()
       closeAuth()

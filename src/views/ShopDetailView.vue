@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { getShopDetail } from '@/api/shop'
 import { getProductList } from '@/api/product'
+import BackButton from '@/components/BackButton.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -72,23 +73,21 @@ watch(() => route.params.id, loadShop)
 </script>
 
 <template>
-  <div class="shop-detail-page" v-loading="loading">
-    <header class="page-header">
-      <el-button link type="primary" @click="router.push('/shops')">← 店铺列表</el-button>
-    </header>
+  <div class="page" v-loading="loading">
+    <BackButton fallback="/shops" />
 
     <template v-if="shop">
-      <el-card shadow="never" class="shop-info">
-        <h2>{{ shop.merchantName }}</h2>
-        <div class="region">{{ shop.region }}</div>
-        <p class="desc">{{ shop.description || '暂无简介' }}</p>
-        <div class="meta">在售 {{ shop.productCount ?? 0 }} 件商品</div>
+      <el-card shadow="never" class="shop-info block">
+        <h2 class="page-title">{{ shop.merchantName }}</h2>
+        <div class="text-primary shop-region-line">{{ shop.region }}</div>
+        <p class="text-body shop-desc-line">{{ shop.description || '暂无简介' }}</p>
+        <div class="text-muted shop-meta-line">在售 {{ shop.productCount ?? 0 }} 件商品</div>
       </el-card>
 
-      <el-card shadow="never" class="products-block">
+      <el-card shadow="never" class="block">
         <template #header>店铺商品</template>
         <el-empty v-if="products.length === 0" description="该店铺暂无在售商品" />
-        <div v-else class="product-grid">
+        <div v-else class="product-grid shop-product-grid">
           <el-card
             v-for="item in products"
             :key="item.id"
@@ -99,8 +98,8 @@ watch(() => route.params.id, loadShop)
             <img :src="item.image || defaultImage" :alt="item.productName" class="product-img" />
             <div class="product-name" :title="item.productName">{{ item.productName }}</div>
             <div class="product-meta">
-              <span class="price">¥ {{ item.price }}</span>
-              <span class="category">{{ item.categoryName }}</span>
+              <span class="price price-md">¥ {{ item.price }}</span>
+              <span class="text-tag">{{ item.categoryName }}</span>
             </div>
           </el-card>
         </div>
@@ -119,89 +118,22 @@ watch(() => route.params.id, loadShop)
 </template>
 
 <style scoped>
-.shop-detail-page {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 24px;
-}
-
-.page-header {
-  margin-bottom: 16px;
-}
-
-.shop-info h2 {
-  margin: 0 0 8px;
-}
-
-.region {
-  color: #409eff;
+.shop-region-line {
   font-size: 14px;
   margin-bottom: 12px;
 }
 
-.desc {
-  color: #606266;
+.shop-desc-line {
   line-height: 1.6;
   margin: 0 0 12px;
 }
 
-.meta {
-  color: #909399;
+.shop-meta-line {
   font-size: 13px;
 }
 
-.shop-info,
-.products-block {
-  margin-bottom: 16px;
-}
-
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+.shop-product-grid {
   gap: 16px;
-}
-
-.product-card {
-  cursor: pointer;
-}
-
-.product-img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 4px;
-  background: #f5f7fa;
-}
-
-.product-name {
-  margin-top: 10px;
-  font-weight: 600;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.product-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 8px;
-}
-
-.price {
-  color: #f56c6c;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.category {
-  color: #909399;
-  font-size: 12px;
-}
-
-.pager {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
+  min-height: auto;
 }
 </style>

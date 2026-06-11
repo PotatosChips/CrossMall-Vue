@@ -5,6 +5,8 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { getCartList, updateCartItem, deleteCartItem } from '@/api/cart'
 import { getProductDetail } from '@/api/product'
 import { useAuthDialog } from '@/composables/useAuthDialog'
+import ProductNameLink from '@/components/ProductNameLink.vue'
+import BackButton from '@/components/BackButton.vue'
 
 const router = useRouter()
 const { openAuth } = useAuthDialog()
@@ -126,9 +128,10 @@ onMounted(loadCart)
 </script>
 
 <template>
-  <div class="cart-page" v-loading="loading">
-    <header class="cart-header">
-      <h2>购物车</h2>
+  <div class="page page-medium" v-loading="loading">
+    <BackButton fallback="/products" />
+    <header class="page-header">
+      <h2 class="page-title">购物车</h2>
       <el-button link type="primary" @click="router.push('/products')">← 继续购物</el-button>
     </header>
 
@@ -147,8 +150,11 @@ onMounted(loadCart)
                 class="thumb"
               />
               <div>
-                <div class="name">{{ row.product?.productName || `商品 #${row.productId}` }}</div>
-                <div class="sub">{{ row.product?.merchantName }} · {{ row.product?.region }}</div>
+                <ProductNameLink
+                  :product-id="row.product?.id ?? row.productId"
+                  :name="row.product?.productName || `商品 #${row.productId}`"
+                />
+                <div class="cell-sub">{{ row.product?.merchantName }} · {{ row.product?.region }}</div>
               </div>
             </div>
           </template>
@@ -185,70 +191,10 @@ onMounted(loadCart)
 
       <div class="cart-footer">
         <div class="total">
-          合计：<span class="price total-price">¥ {{ totalAmount.toFixed(2) }}</span>
+          合计：<span class="price price-total">¥ {{ totalAmount.toFixed(2) }}</span>
         </div>
         <el-button type="primary" @click="router.push('/checkout')">去结算</el-button>
       </div>
     </template>
   </div>
 </template>
-
-<style scoped>
-.cart-page {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 24px;
-}
-
-.cart-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.product-cell {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.thumb {
-  width: 64px;
-  height: 64px;
-  object-fit: cover;
-  border-radius: 6px;
-  background: #f5f7fa;
-  flex-shrink: 0;
-}
-
-.name {
-  font-weight: 600;
-  line-height: 1.4;
-}
-
-.sub {
-  font-size: 12px;
-  color: #909399;
-  margin-top: 4px;
-}
-
-.price {
-  color: #f56c6c;
-  font-weight: 600;
-}
-
-.cart-footer {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 24px;
-  margin-top: 24px;
-  padding-top: 16px;
-  border-top: 1px solid #ebeef5;
-}
-
-.total-price {
-  font-size: 22px;
-}
-</style>

@@ -9,6 +9,7 @@ import {
   afterSaleStatusTag,
 } from '@/utils/afterSaleMeta'
 import { useAuthDialog } from '@/composables/useAuthDialog'
+import BackButton from '@/components/BackButton.vue'
 
 const router = useRouter()
 const { openAuth } = useAuthDialog()
@@ -56,9 +57,9 @@ onMounted(loadList)
 
 <template>
   <div class="page" v-loading="loading">
+    <BackButton fallback="/orders" />
     <header class="page-header">
-      <h2>我的售后</h2>
-      <el-button link type="primary" @click="router.push('/orders')">← 我的订单</el-button>
+      <h2 class="page-title">我的售后</h2>
     </header>
 
     <el-empty v-if="!loading && list.length === 0" description="暂无售后申请" />
@@ -88,18 +89,3 @@ onMounted(loadList)
     </el-table>
   </div>
 </template>
-
-<style scoped>
-.page {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 24px;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-</style>

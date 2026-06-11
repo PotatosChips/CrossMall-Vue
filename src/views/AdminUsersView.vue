@@ -5,6 +5,7 @@ import { getAdminUsers, updateUserStatus } from '@/api/admin'
 import { USER_ROLE, USER_STATUS, userStatusTag } from '@/utils/adminMeta'
 import { useAuthDialog } from '@/composables/useAuthDialog'
 import { useUser } from '@/composables/useUser'
+import BackButton from '@/components/BackButton.vue'
 
 const { openAuth } = useAuthDialog()
 const { isAdmin, user, fetchCurrentUser } = useUser()
@@ -77,9 +78,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="page" v-loading="loading">
+  <div class="page page-medium" v-loading="loading">
+    <BackButton fallback="/" />
     <header class="page-header">
-      <h2>用户管理</h2>
+      <h2 class="page-title">用户管理</h2>
     </header>
 
     <el-alert v-if="!isAdmin" type="warning" show-icon :closable="false">
@@ -119,19 +121,3 @@ onMounted(async () => {
     </el-table>
   </div>
 </template>
-
-<style scoped>
-.page {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 24px;
-}
-
-.page-header {
-  margin-bottom: 20px;
-}
-
-.muted {
-  color: #c0c4cc;
-}
-</style>

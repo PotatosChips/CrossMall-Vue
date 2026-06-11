@@ -18,6 +18,8 @@ import {
 } from '@/utils/orderMeta'
 import { useAuthDialog } from '@/composables/useAuthDialog'
 import { useUser } from '@/composables/useUser'
+import ProductNameLink from '@/components/ProductNameLink.vue'
+import BackButton from '@/components/BackButton.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -195,14 +197,14 @@ watch(() => route.params.orderNo, loadDetail)
 </script>
 
 <template>
-  <div class="detail-page" v-loading="loading">
+  <div class="page page-medium" v-loading="loading">
+    <BackButton fallback="/seller/orders" />
     <header class="page-header">
-      <h2>店铺订单详情</h2>
+      <h2 class="page-title">店铺订单详情</h2>
       <div class="header-actions">
         <el-button link type="primary" @click="router.push({ path: '/seller/after-sales', query: { orderNo: orderNo } })">
           本单售后
         </el-button>
-        <el-button link type="primary" @click="router.push('/seller/orders')">← 店铺订单</el-button>
       </div>
     </header>
 
@@ -230,7 +232,7 @@ watch(() => route.params.orderNo, loadDetail)
             {{ sellerOrderStatusLabel(order) }}
           </el-tag>
         </div>
-        <el-descriptions :column="2" class="desc">
+        <el-descriptions :column="2" class="descriptions-block">
           <el-descriptions-item label="本店金额">
             <span class="price">¥ {{ order.totalAmount }}</span>
           </el-descriptions-item>
@@ -244,7 +246,11 @@ watch(() => route.params.orderNo, loadDetail)
       <el-card shadow="never" class="block">
         <template #header>本店商品明细</template>
         <el-table :data="order.items || []" stripe>
-          <el-table-column prop="productName" label="商品" min-width="200" />
+          <el-table-column label="商品" min-width="200">
+            <template #default="{ row }">
+              <ProductNameLink :product-id="row.productId" :name="row.productName" />
+            </template>
+          </el-table-column>
           <el-table-column label="单价" width="120">
             <template #default="{ row }">¥ {{ row.price }}</template>
           </el-table-column>
@@ -357,7 +363,7 @@ watch(() => route.params.orderNo, loadDetail)
           type="success"
           show-icon
           :closable="false"
-          class="delivered-alert"
+          class="delivered-alert alert-block"
           title="已标记送到，等待买家确认收货，物流信息不可再修改"
         />
         <el-empty v-else-if="!canFirstShip && !order.logistics" description="暂无物流信息" :image-size="80" />
@@ -375,76 +381,3 @@ watch(() => route.params.orderNo, loadDetail)
   </div>
 </template>
 
-<style scoped>
-.detail-page {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 24px;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.block {
-  margin-bottom: 16px;
-}
-
-.head-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 16px;
-}
-
-.order-no {
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.sub {
-  font-size: 13px;
-  color: #909399;
-  margin-top: 6px;
-}
-
-.desc {
-  margin-top: 8px;
-}
-
-.price {
-  color: #f56c6c;
-  font-weight: 600;
-}
-
-.tracks {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid #ebeef5;
-}
-
-.tracks-title,
-.section-title {
-  font-weight: 600;
-  margin-bottom: 12px;
-}
-
-.hint {
-  color: #909399;
-  font-size: 14px;
-  margin: 0;
-}
-
-.delivered-alert {
-  margin-top: 16px;
-}
-</style>

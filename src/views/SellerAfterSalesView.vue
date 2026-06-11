@@ -13,6 +13,7 @@ import {
 import { LOGISTICS_COMPANIES } from '@/utils/orderMeta'
 import { useAuthDialog } from '@/composables/useAuthDialog'
 import { useUser } from '@/composables/useUser'
+import BackButton from '@/components/BackButton.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -149,8 +150,9 @@ watch(() => route.query.orderNo, loadList)
 
 <template>
   <div class="page" v-loading="loading">
+    <BackButton fallback="/seller/orders" />
     <header class="page-header">
-      <h2>店铺售后</h2>
+      <h2 class="page-title">店铺售后</h2>
       <el-select v-model="statusFilter" placeholder="筛选状态" style="width: 140px">
         <el-option
           v-for="item in AFTER_SALE_STATUS_FILTERS"
@@ -161,7 +163,7 @@ watch(() => route.query.orderNo, loadList)
       </el-select>
     </header>
 
-    <el-alert v-if="!isSeller" type="warning" show-icon :closable="false" class="alert">
+    <el-alert v-if="!isSeller" type="warning" show-icon :closable="false" class="alert-block">
       请使用卖家账号登录
     </el-alert>
 
@@ -170,7 +172,7 @@ watch(() => route.query.orderNo, loadList)
       type="info"
       show-icon
       :closable="false"
-      class="alert"
+      class="alert-block"
     >
       当前筛选订单：{{ orderNoFilter }}
       <el-button link type="primary" @click="clearOrderFilter">查看全部</el-button>
@@ -229,7 +231,7 @@ watch(() => route.query.orderNo, loadList)
 
     <el-dialog v-model="handleDialogVisible" :title="handleDialogTitle()" width="480px">
       <template v-if="currentRow">
-        <el-descriptions :column="1" border size="small" class="desc">
+        <el-descriptions :column="1" border size="small" class="descriptions-block">
           <el-descriptions-item label="订单号">{{ currentRow.orderNo }}</el-descriptions-item>
           <el-descriptions-item label="类型">
             {{ AFTER_SALE_TYPE[currentRow.type] }}
@@ -237,7 +239,7 @@ watch(() => route.query.orderNo, loadList)
           <el-descriptions-item label="原因">{{ currentRow.reason }}</el-descriptions-item>
         </el-descriptions>
 
-        <el-form label-width="88px" class="form">
+        <el-form label-width="88px" class="form-block">
           <el-form-item
             v-if="handleForm.action === 'complete' && currentRow.type === 2"
             label="物流公司"
@@ -279,30 +281,3 @@ watch(() => route.query.orderNo, loadList)
     </el-dialog>
   </div>
 </template>
-
-<style scoped>
-.page {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 24px;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.alert {
-  margin-bottom: 16px;
-}
-
-.desc {
-  margin-bottom: 16px;
-}
-
-.form {
-  margin-top: 8px;
-}
-</style>

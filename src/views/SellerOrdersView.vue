@@ -11,6 +11,7 @@ import {
   matchSellerOrderFilter,
 } from '@/utils/orderMeta'
 import { useAuthDialog } from '@/composables/useAuthDialog'
+import BackButton from '@/components/BackButton.vue'
 import { useUser } from '@/composables/useUser'
 
 const router = useRouter()
@@ -71,9 +72,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="orders-page" v-loading="loading">
+  <div class="page page-medium" v-loading="loading">
+    <BackButton fallback="/products" />
     <header class="page-header">
-      <h2>店铺订单</h2>
+      <h2 class="page-title">店铺订单</h2>
       <el-select v-model="statusFilter" placeholder="筛选状态" style="width: 150px">
         <el-option
           v-for="item in SELLER_ORDER_FILTERS"
@@ -84,7 +86,7 @@ onMounted(async () => {
       </el-select>
     </header>
 
-    <el-alert v-if="!isSeller" type="warning" show-icon :closable="false" class="alert">
+    <el-alert v-if="!isSeller" type="warning" show-icon :closable="false" class="alert-block">
       请使用卖家账号登录（如 seller_us / seller_jp / seller_eu，密码 123456）
     </el-alert>
 
@@ -120,28 +122,6 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-.orders-page {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 24px;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.alert {
-  margin-bottom: 16px;
-}
-
-.price {
-  color: #f56c6c;
-  font-weight: 600;
-}
-
 :deep(.el-table__row) {
   cursor: pointer;
 }

@@ -1,5 +1,6 @@
 <script setup>
 import { productStatusLabel, productStatusTag } from '@/utils/productMeta'
+import ProductNameLink from '@/components/ProductNameLink.vue'
 
 defineProps({
   products: { type: Array, default: () => [] },
@@ -12,7 +13,11 @@ const emit = defineEmits(['edit'])
   <el-empty v-if="products.length === 0" description="暂无商品，点击右上角新增" />
 
   <el-table v-else :data="products" stripe>
-    <el-table-column prop="productName" label="商品名称" min-width="160" show-overflow-tooltip />
+    <el-table-column label="商品名称" min-width="160" show-overflow-tooltip>
+      <template #default="{ row }">
+        <ProductNameLink :product-id="row.id" :name="row.productName" />
+      </template>
+    </el-table-column>
     <el-table-column prop="categoryName" label="分类" width="100" />
     <el-table-column label="价格" width="100">
       <template #default="{ row }">
@@ -34,10 +39,3 @@ const emit = defineEmits(['edit'])
     </el-table-column>
   </el-table>
 </template>
-
-<style scoped>
-.price {
-  color: #f56c6c;
-  font-weight: 600;
-}
-</style>

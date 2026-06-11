@@ -72,9 +72,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="shops-page" v-loading="loading">
+  <div class="page" v-loading="loading">
     <header class="page-header">
-      <h2>店铺</h2>
+      <h2 class="page-title">店铺</h2>
     </header>
 
     <div class="toolbar">
@@ -125,68 +125,3 @@ onMounted(async () => {
     </div>
   </div>
 </template>
-
-<style scoped>
-.shops-page {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 24px;
-}
-
-.page-header {
-  margin-bottom: 20px;
-}
-
-.toolbar {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-}
-
-.shop-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
-  min-height: 200px;
-}
-
-.shop-card {
-  cursor: pointer;
-}
-
-.shop-name {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-
-.shop-region {
-  color: #409eff;
-  font-size: 13px;
-  margin-bottom: 10px;
-}
-
-.shop-desc {
-  color: #606266;
-  font-size: 14px;
-  line-height: 1.5;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  min-height: 42px;
-}
-
-.shop-meta {
-  margin-top: 12px;
-  color: #909399;
-  font-size: 13px;
-}
-
-.pager {
-  display: flex;
-  justify-content: center;
-  margin-top: 24px;
-}
-</style>

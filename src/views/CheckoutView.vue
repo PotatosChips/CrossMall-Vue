@@ -6,6 +6,8 @@ import { getCartList } from '@/api/cart'
 import { getProductDetail } from '@/api/product'
 import { createOrder } from '@/api/order'
 import { useAuthDialog } from '@/composables/useAuthDialog'
+import ProductNameLink from '@/components/ProductNameLink.vue'
+import BackButton from '@/components/BackButton.vue'
 
 const router = useRouter()
 const { openAuth } = useAuthDialog()
@@ -118,10 +120,10 @@ onMounted(loadCart)
 </script>
 
 <template>
-  <div class="checkout-page" v-loading="loading">
+  <div class="page page-medium" v-loading="loading">
+    <BackButton fallback="/cart" />
     <header class="page-header">
-      <h2>确认订单</h2>
-      <el-button link type="primary" @click="router.push('/cart')">← 返回购物车</el-button>
+      <h2 class="page-title">确认订单</h2>
     </header>
 
     <el-row :gutter="24">
@@ -129,7 +131,10 @@ onMounted(loadCart)
         <el-card shadow="never" class="block">
           <template #header>商品清单</template>
           <div v-for="item in cartItems" :key="item.id" class="line-item">
-            <span class="name">{{ item.product?.productName || `商品 #${item.productId}` }}</span>
+            <ProductNameLink
+              :product-id="item.product?.id ?? item.productId"
+              :name="item.product?.productName || `商品 #${item.productId}`"
+            />
             <span>× {{ item.quantity }}</span>
             <span class="price">¥ {{ item.product?.price != null ? (item.product.price * item.quantity).toFixed(2) : '-' }}</span>
           </div>
@@ -168,46 +173,3 @@ onMounted(loadCart)
     </el-row>
   </div>
 </template>
-
-<style scoped>
-.checkout-page {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 24px;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.block {
-  margin-bottom: 16px;
-}
-
-.line-item {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.line-item .name {
-  flex: 1;
-  font-weight: 500;
-}
-
-.sum-line {
-  margin-top: 16px;
-  text-align: right;
-  font-size: 16px;
-}
-
-.price {
-  color: #f56c6c;
-  font-weight: 600;
-}
-</style>

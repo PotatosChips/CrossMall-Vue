@@ -20,6 +20,8 @@ import {
   canApplyAfterSale,
 } from '@/utils/afterSaleMeta'
 import { useAuthDialog } from '@/composables/useAuthDialog'
+import ProductNameLink from '@/components/ProductNameLink.vue'
+import BackButton from '@/components/BackButton.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -299,10 +301,11 @@ watch(() => route.params.orderNo, loadDetail)
 </script>
 
 <template>
-  <div class="detail-page" v-loading="loading">
+  <div class="page page-medium" v-loading="loading">
+    <BackButton fallback="/orders" />
     <header class="page-header">
-      <h2>订单详情</h2>
-      <el-button link type="primary" @click="router.push('/orders')">← 订单列表</el-button>
+      <h2 class="page-title">订单详情</h2>
+      <el-button link type="primary" @click="router.push('/products')">继续购物</el-button>
     </header>
 
     <template v-if="order">
@@ -316,7 +319,7 @@ watch(() => route.params.orderNo, loadDetail)
             {{ buyerOrderStatusLabel(order) }}
           </el-tag>
         </div>
-        <el-descriptions :column="2" class="desc">
+        <el-descriptions :column="2" class="descriptions-block">
           <el-descriptions-item label="支付方式">{{ PAY_TYPE[order.payType] || '-' }}</el-descriptions-item>
           <el-descriptions-item label="订单金额">
             <span class="price">¥ {{ order.totalAmount }}</span>
@@ -326,7 +329,7 @@ watch(() => route.params.orderNo, loadDetail)
           <el-descriptions-item label="地址" :span="2">{{ order.address }}</el-descriptions-item>
         </el-descriptions>
 
-        <div class="actions">
+        <div class="actions-row">
           <el-button v-if="order.status === 0" @click="openReceiverDialog">修改收货信息</el-button>
           <el-button v-if="order.status === 0" type="primary" :loading="acting" @click="handlePay">
             模拟支付
@@ -349,7 +352,11 @@ watch(() => route.params.orderNo, loadDetail)
       <el-card shadow="never" class="block">
         <template #header>商品明细</template>
         <el-table :data="order.items || []" stripe>
-          <el-table-column prop="productName" label="商品" min-width="200" />
+          <el-table-column label="商品" min-width="200">
+            <template #default="{ row }">
+              <ProductNameLink :product-id="row.productId" :name="row.productName" />
+            </template>
+          </el-table-column>
           <el-table-column label="单价" width="120">
             <template #default="{ row }">¥ {{ row.price }}</template>
           </el-table-column>
@@ -455,7 +462,9 @@ watch(() => route.params.orderNo, loadDetail)
     </el-dialog>
 
     <el-dialog v-model="reviewDialogVisible" title="商品评价" width="440px">
-      <div v-if="reviewTarget" class="review-target">{{ reviewTarget.productName }}</div>
+      <div v-if="reviewTarget" class="review-target">
+        <ProductNameLink :product-id="reviewTarget.productId" :name="reviewTarget.productName" />
+      </div>
       <el-form label-width="60px">
         <el-form-item label="评分">
           <el-rate v-model="reviewForm.score" />
@@ -508,71 +517,3 @@ watch(() => route.params.orderNo, loadDetail)
   </div>
 </template>
 
-<style scoped>
-.detail-page {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 24px;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.block {
-  margin-bottom: 16px;
-}
-
-.head-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 16px;
-}
-
-.order-no {
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.sub {
-  font-size: 13px;
-  color: #909399;
-  margin-top: 6px;
-}
-
-.desc {
-  margin-top: 8px;
-}
-
-.price {
-  color: #f56c6c;
-  font-weight: 600;
-}
-
-.actions {
-  margin-top: 20px;
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.tracks {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid #ebeef5;
-}
-
-.tracks-title {
-  font-weight: 600;
-  margin-bottom: 12px;
-}
-
-.review-target {
-  font-weight: 600;
-  margin-bottom: 16px;
-}
-</style>
