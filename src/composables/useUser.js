@@ -41,6 +41,7 @@ export function useUser() {
     try {
       await request.post('/userLogout')
     } finally {
+      localStorage.removeItem('token')
       setUser(null)
     }
   }

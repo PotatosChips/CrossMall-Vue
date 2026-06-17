@@ -70,6 +70,9 @@ async function handleLogin() {
     const res = await request.post('/userLogin', params)
 
     if (res.data.success) {
+      if (res.data.token) {
+      localStorage.setItem('token', res.data.token)
+    }
       setUser(res.data)
       await fetchCurrentUser()
       ElMessage.success('登录成功')
